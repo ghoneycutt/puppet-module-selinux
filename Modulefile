@@ -1,0 +1,8 @@
+name    'ghoneycutt-selinux'
+version '0.0.1'
+source 'git://github.com/ghoneycutt/puppet-module-selinux.git'
+author 'ghoneycutt'
+license 'Apache License, Version 2.0'
+summary 'Manage SELinux'
+description 'manage selinux - you know, turn it off'
+project_page 'https://github.com/ghoneycutt/puppet-module-selinux'
