@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'selinux' do
 
-  describe 'has correct file modes' do
+  describe 'has correct selinux_config file attributes' do
 
     it {
       should contain_file('selinux_config').with({
@@ -24,7 +24,7 @@ describe 'selinux' do
     }
   end
 
-  describe 'when setting mode parameter' do
+  describe 'when setting mode parameter to enforcing' do
     let :params do
       { :mode => 'enforcing' }
     end
@@ -34,7 +34,39 @@ describe 'selinux' do
     }
   end
 
-  describe 'when setting type parameter' do
+  describe 'when setting mode parameter to permissive' do
+    let :params do
+      { :mode => 'permissive' }
+    end
+
+    it {
+      should contain_file('selinux_config').with_content(/^\s*SELINUX=permissive$/)
+    }
+  end
+
+  describe 'when setting mode parameter to disabled' do
+    let :params do
+      { :mode => 'disabled' }
+    end
+
+    it {
+      should contain_file('selinux_config').with_content(/^\s*SELINUX=disabled$/)
+    }
+  end
+
+  describe 'invalid mode parameter' do
+    let :params do
+      { :mode => 'INVALID' }
+    end
+
+    it {
+      expect {
+        should contain_file('selinux_config')
+      }.to raise_error(Puppet::Error, /mode is INVALID and must be either 'enforcing', 'permissive' or 'disabled'./)
+    }
+  end
+
+  describe 'when setting type parameter to strict' do
     let :params do
       { :type => 'strict' }
     end
@@ -44,7 +76,29 @@ describe 'selinux' do
     }
   end
 
-  describe 'when setting both parameters' do
+  describe 'when setting type parameter to targeted' do
+    let :params do
+      { :type => 'targeted' }
+    end
+
+    it {
+      should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=targeted$/)
+    }
+  end
+
+  describe 'invalid type parameter' do
+    let :params do
+      { :type => 'INVALID' }
+    end
+
+    it {
+      expect {
+        should contain_file('selinux_config')
+      }.to raise_error(Puppet::Error, /type is INVALID and must be either 'targeted' or 'strict'./)
+    }
+  end
+
+  describe 'when setting both parameters to valid values' do
     let :params do
       {
         :mode => 'enforcing',
@@ -66,29 +120,6 @@ describe 'selinux' do
       should contain_file('selinux_config').with({
         'path' => '/etc/selinux.conf'
        })
-    }
-  end
-
-  describe 'invalid mode parameter' do
-    let :params do
-      { :mode => 'INVALID' }
-    end
-
-    it {
-      expect {
-        should contain_file('selinux_config')
-      }.to raise_error(Puppet::Error, /mode is INVALID and must be either 'enforcing', 'permissive' or 'disabled'./)
-    }
-  end
-  describe 'invalid type parameter' do
-    let :params do
-      { :type => 'INVALID' }
-    end
-
-    it {
-      expect {
-        should contain_file('selinux_config')
-      }.to raise_error(Puppet::Error, /type is INVALID and must be either 'targeted' or 'strict'./)
     }
   end
 end
