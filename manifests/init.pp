@@ -2,33 +2,27 @@
 #
 # This module manages the SELinux configuration file.
 #
-# # Compability #
+# ### Parameters ###
 #
-# This module has been tested to work on the following systems.
+# See man page selinux(8) for more information regarding the configuration settings.
 #
-#  * EL 5
-#   * EL 6
+# mode
+# ----
+# Operation mode of SELinux, valid values are 'enforcing', 'permissive' and 'disabled'.
 #
-#   # Parameters #
-#   Se man page selinux(8) for more information regarding the configuration settings.
+# - *Default*: 'disabled'
 #
-#   mode
-#   ----
-#   Operation mode of SELinux, valid values are 'enforcing', 'permissive' and 'disabled'.
+# type
+# ----
+# The type of policies in use, valid values are 'targeted' and 'strict'.
 #
-#   - *Default*: 'disabled'
+# - *Default*: 'targeted'
 #
-#   type
-#   ----
-#   The type of policies in use, valid values are 'targeted' and 'strict'.
+# config_file
+# -----------
+# The path to the selinux configuration path to manage.
 #
-#   - *Default*: 'targeted'
-#
-#   config_file
-#   -----------
-#   The path to the selinux configuration path to manage.
-#
-#   - *Default*: '/etc/selinux/config'
+# - *Default*: '/etc/selinux/config'
 #
 
 class selinux (
