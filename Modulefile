@@ -6,3 +6,5 @@ license 'Apache License, Version 2.0'
 summary 'Manage SELinux'
 description 'manage selinux - you know, turn it off'
 project_page 'https://github.com/ghoneycutt/puppet-module-selinux'
+
+dependency 'puppetlabs/stdlib',  '3.2.x'
