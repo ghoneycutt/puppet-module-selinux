@@ -1,5 +1,8 @@
 # selinux module #
 
+[![Build Status](
+https://api.travis-ci.org/ghoneycutt/puppet-module-selinux.png)](https://travis-ci.org/ghoneycutt/puppet-module-selinux)
+
 This module manages the SELinux configuration file.
 
 # Compability #
