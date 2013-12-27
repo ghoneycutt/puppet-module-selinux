@@ -2,7 +2,11 @@ require 'spec_helper'
 
 describe 'selinux' do
 
+  it { should compile.with_all_deps }
+
   describe 'has correct selinux_config file attributes' do
+
+    it { should contain_class('selinux') }
 
     it {
       should contain_file('selinux_config').with({
@@ -15,6 +19,9 @@ describe 'selinux' do
   end
 
   describe 'when using default values' do
+
+    it { should contain_class('selinux') }
+
     it {
       should contain_file('selinux_config').with({
         'path' => '/etc/selinux/config',
@@ -29,6 +36,8 @@ describe 'selinux' do
       { :mode => 'enforcing' }
     end
 
+    it { should contain_class('selinux') }
+
     it {
       should contain_file('selinux_config').with_content(/^\s*SELINUX=enforcing$/)
     }
@@ -39,6 +48,8 @@ describe 'selinux' do
       { :mode => 'permissive' }
     end
 
+    it { should contain_class('selinux') }
+
     it {
       should contain_file('selinux_config').with_content(/^\s*SELINUX=permissive$/)
     }
@@ -48,6 +59,8 @@ describe 'selinux' do
     let :params do
       { :mode => 'disabled' }
     end
+
+    it { should contain_class('selinux') }
 
     it {
       should contain_file('selinux_config').with_content(/^\s*SELINUX=disabled$/)
@@ -71,6 +84,8 @@ describe 'selinux' do
       { :type => 'strict' }
     end
 
+    it { should contain_class('selinux') }
+
     it {
       should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=strict$/)
     }
@@ -80,6 +95,8 @@ describe 'selinux' do
     let :params do
       { :type => 'targeted' }
     end
+
+    it { should contain_class('selinux') }
 
     it {
       should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=targeted$/)
@@ -105,6 +122,9 @@ describe 'selinux' do
         :type => 'strict'
       }
     end
+
+    it { should contain_class('selinux') }
+
     it {
       should contain_file('selinux_config').with_content(/^\s*SELINUX=enforcing$/)
       should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=strict$/)
@@ -115,6 +135,8 @@ describe 'selinux' do
     let :params do
       { :config_file => '/etc/selinux.conf' }
     end
+
+    it { should contain_class('selinux') }
 
     it {
       should contain_file('selinux_config').with({
