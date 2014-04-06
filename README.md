@@ -9,7 +9,7 @@ This module manages the SELinux configuration file.
 
 # Compability
 
-This module has been tested to work on the following systems.
+This module has been tested to work on the following systems with Puppet v3 and Ruby versions 1.8.7, 1.9.3 and 2.0.0.
 
  * EL 5
  * EL 6
