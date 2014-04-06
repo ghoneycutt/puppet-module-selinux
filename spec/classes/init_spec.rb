@@ -26,51 +26,38 @@ describe 'selinux' do
       should contain_file('selinux_config').with({
         'path' => '/etc/selinux/config',
       })
-      should contain_file('selinux_config').with_content(/^\s*SELINUX=disabled$/)
-      should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=targeted$/)
     }
+
+    it { should contain_file('selinux_config').with_content(/^\s*SELINUX=disabled$/) }
+    it { should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=targeted$/) }
   end
 
   describe 'when setting mode parameter to enforcing' do
-    let :params do
-      { :mode => 'enforcing' }
-    end
+    let(:params) { { :mode => 'enforcing' } }
 
     it { should contain_class('selinux') }
 
-    it {
-      should contain_file('selinux_config').with_content(/^\s*SELINUX=enforcing$/)
-    }
+    it { should contain_file('selinux_config').with_content(/^\s*SELINUX=enforcing$/) }
   end
 
   describe 'when setting mode parameter to permissive' do
-    let :params do
-      { :mode => 'permissive' }
-    end
+    let(:params) { { :mode => 'permissive' } }
 
     it { should contain_class('selinux') }
 
-    it {
-      should contain_file('selinux_config').with_content(/^\s*SELINUX=permissive$/)
-    }
+    it { should contain_file('selinux_config').with_content(/^\s*SELINUX=permissive$/) }
   end
 
   describe 'when setting mode parameter to disabled' do
-    let :params do
-      { :mode => 'disabled' }
-    end
+    let(:params) { { :mode => 'disabled' } }
 
     it { should contain_class('selinux') }
 
-    it {
-      should contain_file('selinux_config').with_content(/^\s*SELINUX=disabled$/)
-    }
+    it { should contain_file('selinux_config').with_content(/^\s*SELINUX=disabled$/) }
   end
 
   describe 'invalid mode parameter' do
-    let :params do
-      { :mode => 'INVALID' }
-    end
+    let(:params) { { :mode => 'INVALID' } }
 
     it {
       expect {
@@ -80,33 +67,23 @@ describe 'selinux' do
   end
 
   describe 'when setting type parameter to strict' do
-    let :params do
-      { :type => 'strict' }
-    end
+    let(:params) { { :type => 'strict' } }
 
     it { should contain_class('selinux') }
 
-    it {
-      should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=strict$/)
-    }
+    it { should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=strict$/) }
   end
 
   describe 'when setting type parameter to targeted' do
-    let :params do
-      { :type => 'targeted' }
-    end
+    let(:params) { { :type => 'targeted' } }
 
     it { should contain_class('selinux') }
 
-    it {
-      should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=targeted$/)
-    }
+    it { should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=targeted$/) }
   end
 
   describe 'invalid type parameter' do
-    let :params do
-      { :type => 'INVALID' }
-    end
+    let(:params) { { :type => 'INVALID' } }
 
     it {
       expect {
@@ -116,25 +93,20 @@ describe 'selinux' do
   end
 
   describe 'when setting both parameters to valid values' do
-    let :params do
-      {
-        :mode => 'enforcing',
+    let(:params) do
+      { :mode => 'enforcing',
         :type => 'strict'
       }
     end
 
     it { should contain_class('selinux') }
 
-    it {
-      should contain_file('selinux_config').with_content(/^\s*SELINUX=enforcing$/)
-      should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=strict$/)
-    }
+    it { should contain_file('selinux_config').with_content(/^\s*SELINUX=enforcing$/) }
+    it { should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=strict$/) }
   end
 
   describe 'when setting the file path' do
-    let :params do
-      { :config_file => '/etc/selinux.conf' }
-    end
+    let(:params) { { :config_file => '/etc/selinux.conf' } }
 
     it { should contain_class('selinux') }
 
