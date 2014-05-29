@@ -33,6 +33,12 @@ The type of policies in use, valid values are 'targeted' and 'strict'.
 
 - *Default*: 'targeted'
 
+setlocaldefs
+------------
+String to pass to SETLOCALDEFS option. Valid values are '0' and '1'.
+
+- *Default*: undef
+
 config_file
 -----------
 The path to the selinux configuration path to manage.

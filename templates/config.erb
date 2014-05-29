@@ -12,6 +12,10 @@ SELINUX=<%= @mode %>
 # strict - Full SELinux protection.
 SELINUXTYPE=<%= @type %>
 <% if @setlocaldefs -%>
-#SETLOCALDEFS= Check local definition changes
+# SETLOCALDEFS= Controls how local definitions (users and booleans) are set.
+# Possible values are:
+# 0 - have them controlled by semanage.
+# 1 - have these definitions controlled by load_policy from files in
+# /etc/selinux/<policyname>.
 SETLOCALDEFS=<%= @setlocaldefs %>
 <% end -%>
