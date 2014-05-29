@@ -11,3 +11,7 @@ SELINUX=<%= @mode %>
 # targeted - Only targeted network daemons are protected.
 # strict - Full SELinux protection.
 SELINUXTYPE=<%= @type %>
+<% if @setlocaldefs -%>
+#SETLOCALDEFS= Check local definition changes
+SETLOCALDEFS=<%= @setlocaldefs %>
+<% end -%>
