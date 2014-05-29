@@ -30,6 +30,7 @@ describe 'selinux' do
 
     it { should contain_file('selinux_config').with_content(/^\s*SELINUX=disabled$/) }
     it { should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=targeted$/) }
+    it { should contain_file('selinux_config').without_content(/^\s*SETLOCALDEFS/) }
   end
 
   describe 'with mode parameter' do
@@ -76,6 +77,30 @@ describe 'selinux' do
         it { should contain_class('selinux') }
 
         it { should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=#{value}$/) }
+      end
+    end
+  end
+
+  describe 'with setlocaldefs parameter' do
+    ['INVALID',true].each do |value|
+      context "set to #{value}" do
+        let(:params) { { :setlocaldefs => 'INVALID' } }
+
+        it {
+          expect {
+            should contain_file('selinux_config')
+          }.to raise_error(Puppet::Error)
+        }
+      end
+    end
+
+    ['0','1'].each do |value|
+      context "set to #{value}" do
+        let(:params) { { :setlocaldefs => value } }
+
+        it { should contain_class('selinux') }
+
+        it { should contain_file('selinux_config').with_content(/^\s*SETLOCALDEFS=#{value}$/) }
       end
     end
   end
