@@ -16,6 +16,13 @@ class selinux (
     validate_re($setlocaldefs, '^0|1$', "local defs is ${setlocaldefs} must be either 0 or 1.")
   }
 
+  if $mode == 'disabled' {
+    exec { 'Change SELinux mode to Disabled':
+      command => 'setenforce 0',
+      onlyif  => 'selinuxenabled',
+    }
+  }
+
   file { 'selinux_config':
     ensure  => 'file',
     path    => $config_file,
