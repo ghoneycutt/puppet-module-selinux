@@ -54,15 +54,15 @@ describe 'selinux' do
 
         it { should contain_file('selinux_config').with_content(/^\s*SELINUX=#{value}$/) }
 
-        if value == 'disabled'
+        if value == 'permissive'
           it {
-            should contain_exec('disable_selinux').with({
+            should contain_exec('permissive_selinux').with({
               'command' => '/usr/sbin/setenforce 0',
-              'onlyif'  => '/usr/sbin/selinuxenabled',
+              'onlyif'  => '/usr/sbin/getenforce | /bin/grep enforcing',
             })
           }
         else
-          it { should_not contain_exec('disable_selinux') }
+          it { should_not contain_exec('permissive_selinux') }
         end
       end
     end

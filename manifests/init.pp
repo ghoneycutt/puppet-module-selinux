@@ -16,10 +16,10 @@ class selinux (
     validate_re($setlocaldefs, '^0|1$', "local defs is ${setlocaldefs} must be either 0 or 1.")
   }
 
-  if $mode == 'disabled' {
-    exec { 'disable_selinux':
+  if $mode == 'permissive' {
+    exec { 'permissive_selinux':
       command => '/usr/sbin/setenforce 0',
-      onlyif  => '/usr/sbin/selinuxenabled',
+      onlyif  => '/usr/sbin/getenforce | /bin/grep enforcing',
     }
   }
 
