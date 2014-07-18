@@ -24,35 +24,41 @@ describe 'selinux' do
   end
 
   describe 'with mode parameter' do
-    ['INVALID',true].each do |value|
-      context "set to #{value}" do
-        let(:params) { { :mode => 'INVALID' } }
-
-        it {
-          expect {
-            should contain_file('selinux_config')
-          }.to raise_error(Puppet::Error)
-        }
-      end
-    end
-
-    ['enforcing','permissive','disabled'].each do |value|
+    ['enforcing','permissive','disabled','INVALID',true].each do |value|
       context "set to #{value}" do
         let(:params) { { :mode => value } }
 
-        it { should contain_class('selinux') }
+        if value == 'disabled' or value == 'permissive'
 
-        it { should contain_file('selinux_config').with_content(/^\s*SELINUX=#{value}$/) }
+          it { should contain_class('selinux') }
 
-        if value == 'disabled'
+          it { should contain_file('selinux_config').with_content(/^\s*SELINUX=#{value}$/) }
+
           it {
-            should contain_exec('disable_selinux').with({
-              'command' => '/usr/sbin/setenforce 0',
-              'onlyif'  => '/usr/sbin/selinuxenabled',
+            should contain_exec('set_permissive_mode').with({
+              'command' => 'setenforce Permissive',
+              'unless'  => 'getenforce | grep -ie permissive -e disabled',
+              'path'    => '/bin:/usr/bin:/sbin:/usr/sbin',
+            })
+          }
+        elsif value == 'enforcing'
+          it { should contain_class('selinux') }
+
+          it { should contain_file('selinux_config').with_content(/^\s*SELINUX=#{value}$/) }
+
+          it {
+            should contain_exec('set_enforcing_mode').with({
+              'command' => 'setenforce Enforcing',
+              'unless'  => 'getenforce | grep -i enforcing',
+              'path'    => '/bin:/usr/bin:/sbin:/usr/sbin',
             })
           }
         else
-          it { should_not contain_exec('disable_selinux') }
+          it 'should fail' do
+            expect {
+              should contain_class('selinux')
+            }.to raise_error(Puppet::Error)
+          end
         end
       end
     end
