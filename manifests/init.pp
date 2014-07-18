@@ -16,6 +16,8 @@ class selinux (
     validate_re($setlocaldefs, '^0|1$', "local defs is ${setlocaldefs} must be either 0 or 1.")
   }
 
+  validate_absolute_path($config_file)
+
   if $mode == 'disabled' {
     exec { 'disable_selinux':
       command => '/usr/sbin/setenforce 0',
