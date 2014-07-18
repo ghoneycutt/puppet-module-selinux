@@ -53,6 +53,17 @@ describe 'selinux' do
         it { should contain_class('selinux') }
 
         it { should contain_file('selinux_config').with_content(/^\s*SELINUX=#{value}$/) }
+
+        if value == 'disabled'
+          it {
+            should contain_exec('disable_selinux').with({
+              'command' => '/usr/sbin/setenforce 0',
+              'onlyif'  => '/usr/sbin/selinuxenabled',
+            })
+          }
+        else
+          it { should_not contain_exec('disable_selinux') }
+        end
       end
     end
   end
