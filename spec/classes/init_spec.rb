@@ -56,13 +56,14 @@ describe 'selinux' do
 
         if value == 'permissive'
           it {
-            should contain_exec('permissive_selinux').with({
+            should contain_exec('change_mode_selinux').with({
               'command' => '/usr/sbin/setenforce 0',
-              'onlyif'  => '/usr/sbin/getenforce | /bin/grep enforcing',
+              'unless'  => '/usr/sbin/getenforce | /bin/grep -i -e permissive -e Disabled',
             })
           }
-        else
-          it { should_not contain_exec('permissive_selinux') }
+        end
+        if value == 'disabled'
+          it { should_not contain_exec('change_mode_selinux') }
         end
       end
     end
