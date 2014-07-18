@@ -56,15 +56,14 @@ describe 'selinux' do
 
         if value == 'disabled'
           it {
-            should contain_exec('Change SELinux mode to Disabled').with({
+            should contain_exec('disable_selinux').with({
               'command' => '/usr/sbin/setenforce 0',
               'onlyif'  => '/usr/sbin/selinuxenabled',
             })
           }
         else
-          it { should_not contain_exec('Change SELinux mode to Disabled') }
+          it { should_not contain_exec('disable_selinux') }
         end
-
       end
     end
   end
