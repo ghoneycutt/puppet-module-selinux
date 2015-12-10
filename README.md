@@ -13,6 +13,7 @@ This module has been tested to work on the following systems with Puppet v3 and 
 
  * EL 5
  * EL 6
+ * EL 7
 
 ===
 
