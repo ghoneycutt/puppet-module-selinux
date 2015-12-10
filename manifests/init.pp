@@ -31,6 +31,11 @@ class selinux (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('selinux/config.erb'),
+    content => template('selinux/config.erb');
+
+    '/etc/sysconfig/selinux':
+    ensure  => link,
+    target  => $config_file,
+    
   }
 }
