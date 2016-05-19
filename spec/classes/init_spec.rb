@@ -142,4 +142,17 @@ describe 'selinux' do
       }
     end
   end
+
+  describe 'when setting booleans' do
+    let(:params) do
+      { :mode      => 'enforcing',
+        :type      => 'strict'
+        :setsebool => {'nfs_export_all_ro' => { 'value' => 'on' } }
+      }
+    end
+
+    it { should contain_class('selinux') }
+    it { should contain_class('selboolean') }
+  end
+
 end
