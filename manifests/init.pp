@@ -25,6 +25,7 @@ class selinux (
   Pattern[/^targeted|strict$/]                $type         = 'targeted',
   Variant[Undef, Enum['0','1'], Integer[0,1]] $setlocaldefs = undef,
   Stdlib::Absolutepath                        $config_file  = '/etc/selinux/config',
+  Boolean                                     $policytools  = false,
 ) {
 
   # selinux allows you to set the system to permissive or enforcing while
@@ -54,5 +55,14 @@ class selinux (
     group   => 'root',
     mode    => '0644',
     content => template('selinux/config.erb'),
+  }
+
+  # Provide the semanage command to allow permanent configuration of the selinux
+  # policy.  This allows the restorecon command to restore policy to a specified
+  # default.
+  if $policytools == true {
+    package { 'policycoreutils-python':
+      ensure => installed,
+    }
   }
 }

@@ -138,4 +138,27 @@ describe 'selinux' do
       }
     end
   end
+
+  describe 'policytools class parameter' do
+    context 'when false' do
+      let(:params) { { :policytools => false } }
+      it 'includes the selinux class' do
+        expect(subject).to contain_class('selinux')
+      end
+      it 'does not manage package { "policycoreutils-python": }' do
+        expect(subject).not_to contain_package('policycoreutils-python')
+      end
+    end
+    context 'when true' do
+      let(:params) { { :policytools => true } }
+      it 'includes the selinux class' do
+        expect(subject).to contain_class('selinux')
+      end
+      it 'manages package { "policycoreutils-python": }' do
+        expect(subject).to contain_package('policycoreutils-python').with({
+          'ensure' => 'installed',
+        })
+      end
+    end
+  end
 end
