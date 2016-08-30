@@ -12,6 +12,7 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+Gemfile.lock
 
 # YARD artifacts
 .yardoc
@@ -26,4 +27,5 @@ doc/
 
 # Puppet
 coverage/
-spec/fixtures/modules/*
+spec/fixtures/modules
+spec/fixtures/manifests
