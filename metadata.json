@@ -1,6 +1,6 @@
 {
   "name": "ghoneycutt-selinux",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "author": "ghoneycutt",
   "summary": "Manage SELinux",
   "license": "Apache-2.0",
