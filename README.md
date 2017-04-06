@@ -46,3 +46,9 @@ config_file
 The path to the selinux configuration path to manage.
 
 - *Default*: '/etc/selinux/config'
+
+setsebool
+-----------
+Selinux booleans to set (via the selboolean native type).
+
+- *Default*: undef

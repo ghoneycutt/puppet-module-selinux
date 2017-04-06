@@ -7,6 +7,7 @@ class selinux (
   $type         = 'targeted',
   $setlocaldefs = undef,
   $config_file  = '/etc/selinux/config',
+  $setsetbool   = undef,
 ) {
 
   validate_re($mode, '^enforcing|permissive|disabled$', "mode is ${mode} and must be either 'enforcing', 'permissive' or 'disabled'.")
@@ -39,6 +40,11 @@ class selinux (
     }
     default: {
       fail("mode is ${mode} and must be either 'enforcing', 'permissive' or 'disabled'.")
+    }
+  } else {
+    if $setsetbool {
+      validate_hash($setsetbool)
+      create_resources('selboolean', $setsetbool)
     }
   }
 
