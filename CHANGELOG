@@ -1,3 +1,9 @@
+2.0.0 - 2017-12-12 Garrett Honeycutt <code@garretthoneycutt.com>
+  * Add support for EL7
+  * Drop support for Puppet 3. Now using data types. Backward compatibility
+    kept with parameter names and values though now SELinux is enabled by
+    default.
+
 1.0.0 - 2014-04-06 Garrett Honeycutt <code@garretthoneycutt.com>
 * Got to 1.0.0 quality with inspiration from Fabian Arrotin's selinux talk at LOADays
 
