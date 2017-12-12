@@ -10,8 +10,8 @@ This module manages the SELinux configuration file.
 # Compability
 
 This module has been tested to work on the following systems with Puppet
-versions 3 and 4 with Ruby versions 1.8.7, 1.9.3, 2.0.0, 2.1.0 and
-2.3.1. For an exact matrix, please consult .travis.yml.
+versions 3, 4 and 5 with Ruby versions 1.8.7, 1.9.3, 2.0.0, 2.1.9 and
+2.4.1. For an exact matrix, please consult `.travis.yml`.
 
  * EL 5
  * EL 6
