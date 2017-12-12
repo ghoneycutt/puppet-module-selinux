@@ -15,6 +15,7 @@ versions 3, 4 and 5 with Ruby versions 1.8.7, 1.9.3, 2.0.0, 2.1.9 and
 
  * EL 5
  * EL 6
+ * EL 7
 
 ===
 
