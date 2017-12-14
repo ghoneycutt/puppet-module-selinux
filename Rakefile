@@ -14,3 +14,27 @@ task :validate do
     sh "bash -n #{shell_script}"
   end
 end
+
+# Puppet Strings (Documentation generation from inline comments)
+# See: https://github.com/puppetlabs/puppet-strings#rake-tasks
+require 'puppet-strings/tasks'
+
+desc 'Alias for strings:generate'
+task :doc => ['strings:generate']
+
+desc 'Alias for strings:gh_pages:update'
+task :doc_update => ['strings:gh_pages:update']
+
+desc 'Run validate, lint and spec tests.'
+task :test do
+  [:syntax, :validate, :lint, :spec, :doc].each do |test|
+    Rake::Task[test].invoke
+  end
+end
+
+desc 'Release a new version.'
+task :release do
+  [:build, :doc_update].each do |t|
+    Rake::Task[t].invoke
+  end
+end

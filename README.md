@@ -1,48 +1,71 @@
 # selinux module
 ===
 
-[![Build Status](https://api.travis-ci.org/ghoneycutt/puppet-module-selinux.png)](https://travis-ci.org/ghoneycutt/puppet-module-selinux)
-
-This module manages the SELinux configuration file.
-
-===
-
 # Compability
 
 This module has been tested to work on the following systems with Puppet
-versions 3, 4 and 5 with Ruby versions 1.8.7, 1.9.3, 2.0.0, 2.1.9 and
-2.4.1. For an exact matrix, please consult `.travis.yml`.
+versions 4 and 5. For an exact matrix of Puppet and Ruby versions, please
+consult `.travis.yml`.
 
  * EL 5
  * EL 6
+ * EL 7
 
-===
+## Documented with Puppet Strings
 
-# Parameters
+[Puppet Strings documentation](http://ghoneycutt.github.io/puppet-module-selinux/)
+
+# Class Descriptions
+## Class `selinux`
+
+### Description
+
+The selinux class manages SELinux for enterprise linux systems. By default, it enables SELinux. To use, simply
+`include ::selinux`.
+
+
+### Parameters
 
 See man page selinux(8) for more information regarding the configuration settings.
 
-
-mode
-----
+---
+####  mode (type: String)
 Operation mode of SELinux, valid values are 'enforcing', 'permissive' and 'disabled'.
 
 - *Default*: 'disabled'
 
-type
-----
+---
+#### type (type: String)
 The type of policies in use, valid values are 'targeted' and 'strict'.
 
 - *Default*: 'targeted'
 
-setlocaldefs
-------------
-String to pass to SETLOCALDEFS option. Valid values are '0' and '1'.
+---
+#### setlocaldefs (type: String, Integer or Undef)
+String or Integer to pass to SETLOCALDEFS option. Valid values are `0`
+and `1`. If left undef, then the SETLOCALDEFS section is not included in
+the `config_file`.
 
 - *Default*: undef
 
-config_file
------------
+---
+#### config_file (type: Stdlib::Absolutepath)
 The path to the selinux configuration path to manage.
 
 - *Default*: '/etc/selinux/config'
+
+### Examples
+
+To enable SELinux
+
+```puppet
+include ::selinux
+```
+
+To disable SELinux
+
+```puppet
+class { '::selinux':
+  mode => 'disabled',
+}
+```

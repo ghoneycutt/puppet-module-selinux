@@ -18,8 +18,8 @@ describe 'selinux' do
       })
     }
 
-    it { should contain_file('selinux_config').with_content(/^\s*SELINUX=disabled$/) }
-    it { should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=targeted$/) }
+    it { should contain_file('selinux_config').with_content(/^SELINUX=enforcing$/) }
+    it { should contain_file('selinux_config').with_content(/^SELINUXTYPE=targeted$/) }
     it { should contain_file('selinux_config').without_content(/^\s*SETLOCALDEFS/) }
   end
 
@@ -30,9 +30,7 @@ describe 'selinux' do
 
         if value == 'disabled' or value == 'permissive'
 
-          it { should contain_class('selinux') }
-
-          it { should contain_file('selinux_config').with_content(/^\s*SELINUX=#{value}$/) }
+          it { should contain_file('selinux_config').with_content(/^SELINUX=#{value}$/) }
 
           it {
             should contain_exec('set_permissive_mode').with({
@@ -42,9 +40,7 @@ describe 'selinux' do
             })
           }
         elsif value == 'enforcing'
-          it { should contain_class('selinux') }
-
-          it { should contain_file('selinux_config').with_content(/^\s*SELINUX=#{value}$/) }
+          it { should contain_file('selinux_config').with_content(/^SELINUX=#{value}$/) }
 
           it {
             should contain_exec('set_enforcing_mode').with({
@@ -57,7 +53,7 @@ describe 'selinux' do
           it 'should fail' do
             expect {
               should contain_class('selinux')
-            }.to raise_error(Puppet::Error)
+            }.to raise_error(Puppet::Error,/Error while evaluating a Resource Statement/)
           end
         end
       end
@@ -72,7 +68,7 @@ describe 'selinux' do
         it {
           expect {
             should contain_file('selinux_config')
-          }.to raise_error(Puppet::Error)
+          }.to raise_error(Puppet::Error,/Error while evaluating a Resource Statement/)
         }
       end
     end
@@ -83,31 +79,29 @@ describe 'selinux' do
 
         it { should contain_class('selinux') }
 
-        it { should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=#{value}$/) }
+        it { should contain_file('selinux_config').with_content(/^SELINUXTYPE=#{value}$/) }
       end
     end
   end
 
   describe 'with setlocaldefs parameter' do
-    ['INVALID',true].each do |value|
+    ['INVALID', true].each do |value|
       context "set to #{value}" do
-        let(:params) { { :setlocaldefs => 'INVALID' } }
+        let(:params) { { :setlocaldefs => value } }
 
         it {
           expect {
             should contain_file('selinux_config')
-          }.to raise_error(Puppet::Error)
+          }.to raise_error(Puppet::Error,/Error while evaluating a Resource Statement/)
         }
       end
     end
 
-    ['0','1'].each do |value|
-      context "set to #{value}" do
+    [0,'0',1,'1'].each do |value|
+      context "set to #{value} (class #{value.class})" do
         let(:params) { { :setlocaldefs => value } }
 
-        it { should contain_class('selinux') }
-
-        it { should contain_file('selinux_config').with_content(/^\s*SETLOCALDEFS=#{value}$/) }
+        it { should contain_file('selinux_config').with_content(/^SETLOCALDEFS=#{value}$/) }
       end
     end
   end
@@ -119,17 +113,13 @@ describe 'selinux' do
       }
     end
 
-    it { should contain_class('selinux') }
-
-    it { should contain_file('selinux_config').with_content(/^\s*SELINUX=enforcing$/) }
-    it { should contain_file('selinux_config').with_content(/^\s*SELINUXTYPE=strict$/) }
+    it { should contain_file('selinux_config').with_content(/^SELINUX=enforcing$/) }
+    it { should contain_file('selinux_config').with_content(/^SELINUXTYPE=strict$/) }
   end
 
   describe 'with config_file specified' do
     context 'as a valid path' do
       let(:params) { { :config_file => '/etc/selinux.conf' } }
-
-      it { should contain_class('selinux') }
 
       it {
         should contain_file('selinux_config').with({
@@ -144,7 +134,7 @@ describe 'selinux' do
       it {
         expect {
           should contain_file('selinux_config')
-        }.to raise_error(Puppet::Error)
+        }.to raise_error(Puppet::Error,/Error while evaluating a Resource Statement/)
       }
     end
   end
