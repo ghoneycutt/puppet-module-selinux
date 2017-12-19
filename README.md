@@ -54,6 +54,23 @@ The path to the selinux configuration path to manage.
 
 - *Default*: '/etc/selinux/config'
 
+---
+#### policytools
+If true, manage the `policycoreutils-python` package.  The purpose of this
+behavior is to provide the `semanage` command, e.g. to reconfigure the selinux
+policy such that `restorecon` will restore a file to the desired state.  For
+example, to enable SSH key based login for an user account outside of the normal
+location:
+
+    semanage fcontext -a -t ssh_home_t /var/lib/git/.ssh
+    semanage fcontext -a -t ssh_home_t /var/lib/git/.ssh/authorized_keys
+    restorecon -v /var/lib/git/.ssh/
+    restorecon -v /var/lib/git/.ssh/authorized_keys
+
+- *Default*: false
+
+=======
+
 ### Examples
 
 To enable SELinux
