@@ -4,8 +4,9 @@
 # Compability
 
 This module has been tested to work on the following systems with Puppet
-versions 4, 5 and 6. For an exact matrix of Puppet and Ruby versions, please
-consult `.travis.yml`.
+versions 5 and 6. For an exact matrix of Puppet and Ruby versions,
+please consult `.travis.yml`. This module intends to support the latest
+release of the current and previous Puppet versions.
 
  * EL 5
  * EL 6
