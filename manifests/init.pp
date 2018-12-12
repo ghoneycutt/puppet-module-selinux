@@ -20,6 +20,19 @@
 # @param config_file
 #   The path to the selinux configuration path to manage.
 #
+# @param policytools
+#   If true, manage the `policycoreutils-python` package.  The purpose of this
+#   behavior is to provide the `semanage` command, e.g. to reconfigure the
+#   selinux policy such that `restorecon` will restore a file to the desired
+#   state.
+#
+# @example To enable SSH key based login for an user account outside of the normal location:
+#
+#   semanage fcontext -a -t ssh_home_t /var/lib/git/.ssh
+#   semanage fcontext -a -t ssh_home_t /var/lib/git/.ssh/authorized_keys
+#   restorecon -v /var/lib/git/.ssh/
+#   restorecon -v /var/lib/git/.ssh/authorized_keys
+#
 class selinux (
   Pattern[/^enforcing|permissive|disabled$/]  $mode         = 'enforcing',
   Pattern[/^targeted|strict$/]                $type         = 'targeted',
