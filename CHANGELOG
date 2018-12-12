@@ -1,3 +1,6 @@
+2.1.0 - 2018-12-12
+  * Add support for Puppet 6
+
 2.0.0 - 2017-12-12 Garrett Honeycutt <code@garretthoneycutt.com>
   * Add support for EL7
   * Drop support for Puppet 3. Now using data types. Backward compatibility
