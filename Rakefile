@@ -25,9 +25,14 @@ task :doc => ['strings:generate']
 desc 'Alias for strings:gh_pages:update'
 task :doc_update => ['strings:gh_pages:update']
 
+desc 'Generate REFERENCE.md'
+task :reference do
+  sh 'puppet strings generate --format markdown'
+end
+
 desc 'Run validate, lint and spec tests.'
 task :test do
-  [:syntax, :validate, :lint, :spec, :doc].each do |test|
+  [:syntax, :validate, :lint, :spec, :doc, :reference].each do |test|
     Rake::Task[test].invoke
   end
 end
