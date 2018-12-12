@@ -51,6 +51,12 @@ class selinux (
       unless  => 'getenforce | grep -ie permissive -e disabled',
       path    => '/bin:/usr/bin:/sbin:/usr/sbin',
     }
+
+    if $policytools == true {
+      Package['policycoreutils-python'] {
+        before +> Exec['set_permissive_mode'],
+      }
+    }
   }
 
   if $mode == 'enforcing' {
@@ -58,6 +64,12 @@ class selinux (
       command => 'setenforce Enforcing',
       unless  => 'getenforce | grep -i enforcing',
       path    => '/bin:/usr/bin:/sbin:/usr/sbin',
+    }
+
+    if $policytools == true {
+      Package['policycoreutils-python'] {
+        before +> Exec['set_enforcing_mode'],
+      }
     }
   }
 
