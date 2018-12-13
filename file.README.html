@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.12
+    &mdash; Documentation by YARD 0.9.16
   
 </title>
 
@@ -57,92 +57,80 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><div id='filecontents'>
-<h1 id="label-23+selinux+module"># selinux module</h1>
+      <div id="content"><div id='filecontents'><h1>puppet-module-selinux</h1>
 
-<h1 id="label-Compability">Compability</h1>
+<h4>Table of Contents</h4>
+
+<ol>
+<li><a href="#label-Module+description">Module Description - What the module does and why it is useful</a></li>
+<li><a href="#label-Setup">Setup - The basics of getting started with selinux</a>
+
+<ul>
+<li><a href="#label-What+selinux+affects">What selinux affects</a></li>
+<li><a href="#label-Setup+requirements">Setup requirements</a></li>
+<li><a href="#label-Beginning+with+selinux">Beginning with selinux</a></li>
+</ul></li>
+<li><a href="#label-Usage">Usage - Configuration options and additional functionality</a></li>
+<li><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></li>
+<li><a href="#label-Development">Development - Guide for contributing to the module</a></li>
+</ol>
+
+<h2>Module description</h2>
+
+<p>This module manages SELinux and by default will enable it.</p>
+
+<h2>Setup</h2>
+
+<h3>What selinux affects</h3>
+
+<p>Manages SELinux and its configuration. It manages the file
+<code>/etc/selinux/config</code> and optionally manages the
+<code>policycoreutils-python</code> package.</p>
+
+<h3>Setup requirements</h3>
+
+<p>This module requires <code>stdlib</code>.</p>
+
+<h3>Beginning with selinux</h3>
+
+<h4>Examples</h4>
+
+<h5>Enable SELinux</h5>
+
+<pre class="code puppet"><code class="puppet">include ::selinux
+</code></pre>
+
+<h5>Disable SELinux</h5>
+
+<pre class="code puppet"><code class="puppet">class { &#39;::selinux&#39;:
+  mode =&gt; &#39;disabled&#39;,
+}
+</code></pre>
+
+<h2>Usage</h2>
+
+<p>Minimal and normal usage.</p>
+
+<pre class="code puppet"><code class="puppet">include ::selinux
+</code></pre>
+
+<h2>Limitations</h2>
 
 <p>This module has been tested to work on the following systems with Puppet
-versions 4 and 5. For an exact matrix of Puppet and Ruby versions, please
-consult <code>.travis.yml</code>.</p>
-<ul><li>
-<p>EL 5</p>
-</li><li>
-<p>EL 6</p>
-</li><li>
-<p>EL 7</p>
-</li></ul>
+versions 5 and 6 with the Ruby version associated with those releases.
+Please see <code>.travis.yml</code> for a full matrix of supported versions. This
+module aims to support the current and previous major Puppet versions.</p>
 
-<h2 id="label-Documented+with+Puppet+Strings">Documented with Puppet Strings</h2>
+<ul>
+<li>EL 5</li>
+<li>EL 6</li>
+<li>EL 7</li>
+</ul>
 
-<p><a href="http://ghoneycutt.github.io/puppet-module-selinux/">Puppet Strings
-documentation</a></p>
+<h2>Development</h2>
 
-<h1 id="label-Class+Descriptions">Class Descriptions</h1>
-
-<h2 id="label-Class+selinux">Class <code>selinux</code></h2>
-
-<h3 id="label-Description">Description</h3>
-
-<p>The selinux class manages SELinux for enterprise linux systems. By default,
-it enables SELinux. To use, simply <code>include ::selinux</code>.</p>
-
-<h3 id="label-Parameters">Parameters</h3>
-
-<p>See man page selinux(8) for more information regarding the configuration
-settings.</p>
-
-<p>—</p>
-
-<h4 id="label-mode+-28type-3A+String-29">mode (type: String)</h4>
-
-<p>Operation mode of SELinux, valid values are &#39;enforcing&#39;,
-&#39;permissive&#39; and &#39;disabled&#39;.</p>
-<ul><li>
-<p><em>Default</em>: &#39;disabled&#39;</p>
-</li></ul>
-
-<p>—</p>
-
-<h4 id="label-type+-28type-3A+String-29">type (type: String)</h4>
-
-<p>The type of policies in use, valid values are &#39;targeted&#39; and
-&#39;strict&#39;.</p>
-<ul><li>
-<p><em>Default</em>: &#39;targeted&#39;</p>
-</li></ul>
-
-<p>—</p>
-
-<h4 id="label-setlocaldefs+-28type-3A+String-2C+Integer+or+Undef-29">setlocaldefs (type: String, Integer or Undef)</h4>
-
-<p>String or Integer to pass to SETLOCALDEFS option. Valid values are
-<code>0</code> and <code>1</code>. If left undef, then the SETLOCALDEFS
-section is not included in the <code>config_file</code>.</p>
-<ul><li>
-<p><em>Default</em>: undef</p>
-</li></ul>
-
-<p>—</p>
-
-<h4 id="label-config_file+-28type-3A+Stdlib-3A-3AAbsolutepath-29">config_file (type: Stdlib::Absolutepath)</h4>
-
-<p>The path to the selinux configuration path to manage.</p>
-<ul><li>
-<p><em>Default</em>: &#39;/etc/selinux/config&#39;</p>
-</li></ul>
-
-<h3 id="label-Examples">Examples</h3>
-
-<p>To enable SELinux</p>
-
-<pre class="code ruby"><code class="ruby">include ::selinux</code></pre>
-
-<p>To disable SELinux</p>
-
-<pre class="code ruby"><code class="ruby">class { &#39;::selinux&#39;:
-  mode =&gt; &#39;disabled&#39;,
-}</code></pre>
+<p>See <code>CONTRIBUTING.md</code> for information related to the development of this
+module.</p>
 </div></div>
 
       <div id="footer">

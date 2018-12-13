@@ -6,7 +6,7 @@
 <title>
   Puppet Class: selinux
   
-    &mdash; Documentation by YARD 0.9.12
+    &mdash; Documentation by YARD 0.9.16
   
 </title>
 
@@ -77,23 +77,33 @@
 <h2>Overview</h2>
 <div class="docstring">
   <div class="discussion">
-    
-<p>This module manages the SELinux configuration file.</p>
+    <p>This module manages the SELinux configuration file.</p>
 
   </div>
 </div>
+
+
 <div class="tags">
   
   <div class="examples">
     <p class="tag_title">Examples:</p>
     
       
-        <p class="example_title"><div class='inline'>
-<p>Declaring the class</p>
+        <p class="example_title"><div class='inline'><p>Declaring the class</p>
 </div></p>
       
       <pre class="example code"><code>
 include ::selinux</code></pre>
+    
+      
+        <p class="example_title"><div class='inline'><p>To enable SSH key based login for an user account outside of the normal location:</p>
+</div></p>
+      
+      <pre class="example code"><code>
+semanage fcontext -a -t ssh_home_t /var/lib/git/.ssh
+semanage fcontext -a -t ssh_home_t /var/lib/git/.ssh/authorized_keys
+restorecon -v /var/lib/git/.ssh/
+restorecon -v /var/lib/git/.ssh/authorized_keys</code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -111,9 +121,7 @@ include ::selinux</code></pre>
       
       
         &mdash;
-        <div class='inline'>
-<p>Operation mode of SELinux, valid values are &#39;enforcing&#39;,
-&#39;permissive&#39; and &#39;disabled&#39;.</p>
+        <div class='inline'><p>Operation mode of SELinux, valid values are &#39;enforcing&#39;, &#39;permissive&#39; and &#39;disabled&#39;.</p>
 </div>
       
     </li>
@@ -130,9 +138,7 @@ include ::selinux</code></pre>
       
       
         &mdash;
-        <div class='inline'>
-<p>The type of policies in use, valid values are &#39;targeted&#39; and
-&#39;strict&#39;.</p>
+        <div class='inline'><p>The type of policies in use, valid values are &#39;targeted&#39; and &#39;strict&#39;.</p>
 </div>
       
     </li>
@@ -149,10 +155,9 @@ include ::selinux</code></pre>
       
       
         &mdash;
-        <div class='inline'>
-<p>String or Integer to pass to SETLOCALDEFS option. Valid values are
-&#39;0&#39; and &#39;1&#39;. If left undef, then the SETLOCALDEFS option is
-not included in the config_file.</p>
+        <div class='inline'><p>String or Integer to pass to SETLOCALDEFS option. Valid values are &#39;0&#39; and &#39;1&#39;. If
+left undef, then the SETLOCALDEFS option is not included in the
+config_file.</p>
 </div>
       
     </li>
@@ -169,8 +174,27 @@ not included in the config_file.</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>The path to the selinux configuration path to manage.</p>
+        <div class='inline'><p>The path to the selinux configuration path to manage.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>policytools</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>If true, manage the <code>policycoreutils-python</code> package.  The purpose of this
+behavior is to provide the <code>semanage</code> command, e.g. to reconfigure the
+selinux policy such that <code>restorecon</code> will restore a file to the desired
+state.</p>
 </div>
       
     </li>
@@ -185,19 +209,6 @@ not included in the config_file.</p>
         <pre class="lines">
 
 
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
 36
 37
 38
@@ -220,16 +231,52 @@ not included in the config_file.</p>
 55
 56
 57
-58</pre>
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 23</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 36</span>
 
 class selinux (
   Pattern[/^enforcing|permissive|disabled$/]  $mode         = &#39;enforcing&#39;,
   Pattern[/^targeted|strict$/]                $type         = &#39;targeted&#39;,
   Variant[Undef, Enum[&#39;0&#39;,&#39;1&#39;], Integer[0,1]] $setlocaldefs = undef,
   Stdlib::Absolutepath                        $config_file  = &#39;/etc/selinux/config&#39;,
+  Boolean                                     $policytools  = false,
 ) {
 
   # selinux allows you to set the system to permissive or enforcing while
@@ -242,6 +289,12 @@ class selinux (
       unless  =&gt; &#39;getenforce | grep -ie permissive -e disabled&#39;,
       path    =&gt; &#39;/bin:/usr/bin:/sbin:/usr/sbin&#39;,
     }
+
+    if $policytools == true {
+      Package[&#39;policycoreutils-python&#39;] {
+        before +&gt; Exec[&#39;set_permissive_mode&#39;],
+      }
+    }
   }
 
   if $mode == &#39;enforcing&#39; {
@@ -249,6 +302,12 @@ class selinux (
       command =&gt; &#39;setenforce Enforcing&#39;,
       unless  =&gt; &#39;getenforce | grep -i enforcing&#39;,
       path    =&gt; &#39;/bin:/usr/bin:/sbin:/usr/sbin&#39;,
+    }
+
+    if $policytools == true {
+      Package[&#39;policycoreutils-python&#39;] {
+        before +&gt; Exec[&#39;set_enforcing_mode&#39;],
+      }
     }
   }
 
@@ -259,6 +318,15 @@ class selinux (
     group   =&gt; &#39;root&#39;,
     mode    =&gt; &#39;0644&#39;,
     content =&gt; template(&#39;selinux/config.erb&#39;),
+  }
+
+  # Provide the semanage command to allow permanent configuration of the selinux
+  # policy.  This allows the restorecon command to restore policy to a specified
+  # default.
+  if $policytools == true {
+    package { &#39;policycoreutils-python&#39;:
+      ensure =&gt; installed,
+    }
   }
 }</pre>
       </td>
