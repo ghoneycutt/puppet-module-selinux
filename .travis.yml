@@ -55,7 +55,7 @@ notifications:
 deploy:
   provider: puppetforge
   user: ghoneycutt
-  passwd:
+  password:
     secure: "nj8F6mM86w+6XOCUrFZpsyC0wnVvK9u4a2YimYN7B73pF0/8RcH+9KTwrklxDgLZsu1VmxmrDBhHJr01K85qPYy1eKbebwSDGIxwtDmZmTbdWgcFqsQ8BGdVP2+e1A8I7y9MRkdmXdTsmfRojwgplLL2xp+bYg3PUtm702VYxC4="
   on:
     tags: true
