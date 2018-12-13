@@ -1,7 +1,6 @@
 # Change Log
 
-## [v2.2.0](https://github.com/ghoneycutt/puppet-module-selinux/tree/v2.2.0)
-
+## [v2.2.0](https://github.com/ghoneycutt/puppet-module-selinux/tree/v2.2.0) (2018-12-13)
 [Full Changelog](https://github.com/ghoneycutt/puppet-module-selinux/compare/v2.1.0...v2.2.0)
 
 **Merged pull requests:**
